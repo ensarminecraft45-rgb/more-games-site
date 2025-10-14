@@ -58,35 +58,27 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
-        #swf-yukle-bolumu input[type="url"], #swf-yukle-bolumu button {
-            padding: 12px;
-            margin-right: 10px;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-            font-size: 1em;
-            background-color: var(--input-bg);
-            color: var(--text-color);
-        }
-
-        #swf-yukle-bolumu input[type="url"] {
-            width: calc(100% - 150px);
-            margin-bottom: 10px;
-        }
-
-        #swf-yukle-bolumu button {
+        /* YENİ DOSYA YÜKLEME BUTONU STİLİ */
+        #swf-yukle-bolumu label {
+            display: inline-block;
             background-color: var(--main-color);
             color: #1a1a1a;
+            padding: 12px 20px;
+            border-radius: 6px;
             cursor: pointer;
-            border: none;
             transition: background-color 0.3s;
-            width: 120px;
+            font-size: 1em;
+            border: none;
         }
 
-        #swf-yukle-bolumu button:hover {
+        #swf-yukle-bolumu label:hover {
             background-color: #00e5ff;
         }
 
-        /* Oyun Listesi */
+        #local-file-input {
+            display: none; /* Gerçek input'u gizle */
+        }
+        
         .oyun-listesi {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -119,7 +111,6 @@
             color: #bbb;
         }
 
-        /* Oyun Alanı */
         .oyun-alani object, .oyun-alani embed {
             display: block;
             margin: 20px auto;
@@ -147,47 +138,47 @@
     <div class="container">
         
         <div id="swf-yukle-bolumu">
-            <h2>Kendi SWF Dosyanızı Oynatın (URL Girin)</h2>
-            <input type="url" id="swf-url" placeholder="SWF dosyasının tam URL'sini girin..." required>
-            <button onclick="swfOynat()">Oynat</button>
+            <h2>Kendi SWF Dosyanızı Yerelden Açın</h2>
+            <p style="color:#aaa;">*Dosyanız sunucuya yüklenmez. Sadece tarayıcınızda açılır.</p>
+            <input type="file" id="local-file-input" accept=".swf" onchange="localSwfAc(event)">
+            <label for="local-file-input">SWF Dosyası Seç</label>
         </div>
 
         <div class="oyun-alani" id="oyun-alani">
-            <p>Listeden bir oyun seçin veya yukarıdaki kutucuğa bir SWF URL'si girin.</p>
+            <p>Listeden bir oyun seçin veya kendi bilgisayarınızdaki bir SWF dosyasını açın.</p>
         </div>
 
-        <h2>Hazır Oyunlar</h2>
+        <h2>Oyun Koleksiyonu</h2>
         <div class="oyun-listesi">
             
-            <div class="oyun-kart" onclick="oyunYukle('https://ruffle.rs/demo/example.swf', 'Ruffle Demo')">
-                <h3>Ruffle Demo Testi</h3>
-                <p>Emülatörün çalıştığını kontrol edin.</p>
+            <div class="oyun-kart" onclick="oyunYukle('https://ruffle.rs/demo/example.swf', '3D Blok Yapma Oyunu (Örnek)')">
+                <h3>Minecraft Benzeri Yapım</h3>
+                <p>Basit 3D/Blok tarzı yapım oyunları.</p>
             </div>
             
-            <div class="oyun-kart" onclick="oyunYukle('https://uploads.ungrounded.net/513000/513063_Dad_N_Me.swf', 'Dad 'N Me')">
-                <h3>Dad 'N Me</h3>
-                <p>Klasik bir dövüş oyunu.</p>
+            <div class="oyun-kart" onclick="oyunYukle('https://uploads.ungrounded.net/449000/449272_run_2.swf', 'Beceri Parkuru: Koşu 2')">
+                <h3>Obby / Beceri Parkuru</h3>
+                <p>Platform ve hızlı refleks gerektiren oyun.</p>
             </div>
             
-            <div class="oyun-kart" onclick="oyunYukle('https://uploads.ungrounded.net/60000/60010_The_Impossible_Quiz.swf', 'The Impossible Quiz')">
-                <h3>The Impossible Quiz</h3>
-                <p>Beyin yakan sorular.</p>
+            <div class="oyun-kart" onclick="oyunYukle('https://uploads.ungrounded.net/72000/72793_Truck_Loader.swf', 'Tır Yükleme Simülasyonu')">
+                <h3>Tır Sürme Oyunu</h3>
+                <p>Yük taşıma ve park etme temalı oyunlar.</p>
             </div>
 
-            <div class="oyun-kart" onclick="oyunYukle('https://uploads.ungrounded.net/3000/3932_Pico_s_School.swf', 'Pico\'s School')">
-                <h3>Pico's School</h3>
-                <p>Newgrounds klasiği.</p>
+            <div class="oyun-kart" onclick="oyunYukle('https://uploads.ungrounded.net/32000/32085_Motocross_Mania.swf', 'Motor Çılgınlığı')">
+                <h3>Motor Yarışı</h3>
+                <p>Hızlı ve akrobatik motor yarışları.</p>
             </div>
             
         </div>
     </div>
 
     <script>
-        // Oyun Yükleme Fonksiyonu (Aynı kaldı)
+        const oyunAlani = document.getElementById('oyun-alani');
+
+        // 1. URL'den veya Sabit SWF'den Oyun Yükleme Fonksiyonu
         function oyunYukle(swfUrl, oyunAdi) {
-            const oyunAlani = document.getElementById('oyun-alani');
-            
-            // Oyun alanına yeni object/embed etiketini ekle
             oyunAlani.innerHTML = `
                 <h2>Oynanıyor: ${oyunAdi}</h2>
                 <object data="${swfUrl}" type="application/x-shockwave-flash" width="100%" height="500">
@@ -197,16 +188,30 @@
             `;
         }
 
-        // SWF URL Oynatma Fonksiyonu (Aynı kaldı)
-        function swfOynat() {
-            const swfUrlInput = document.getElementById('swf-url');
-            const url = swfUrlInput.value.trim();
+        // 2. Yerel Dosyadan Oyun Yükleme Fonksiyonu (Yeni)
+        function localSwfAc(event) {
+            const file = event.target.files[0];
+            if (!file) return;
 
-            if (url && url.toLowerCase().endsWith('.swf')) {
-                oyunYukle(url, "Kendi Yüklediğiniz Oyun");
-            } else {
-                alert("Lütfen geçerli bir SWF dosya URL'si girin. (Dosya yükleme değil, URL girmelisiniz)");
-            }
+            // Dosya okuyucu (FileReader) kullanarak dosyanın verisine erişme
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const swfDataURL = e.target.result; // Dosyanın Data URL'si (geçici bellek konumu)
+                const oyunAdi = file.name;
+
+                // Data URL'yi kullanarak object etiketini oluştur
+                oyunAlani.innerHTML = `
+                    <h2>Oynanıyor: ${oyunAdi} (Yerel Dosya)</h2>
+                    <object data="${swfDataURL}" type="application/x-shockwave-flash" width="100%" height="500">
+                        <param name="movie" value="${swfDataURL}">
+                        <p>Ruffle yerel dosyayı yüklüyor...</p>
+                    </object>
+                `;
+            };
+
+            // Dosyayı Data URL olarak oku
+            reader.readAsDataURL(file);
         }
     </script>
 
