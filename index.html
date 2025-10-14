@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>More Games</title>
+    <style>
+        /* KARANLIK MOD STİLLERİ */
+        :root {
+            --bg-color: #1a1a1a;
+            --text-color: #f0f0f0;
+            --main-color: #00bcd4; /* Açık Mavi/Turkuaz */
+            --card-bg: #2a2a2a;
+            --border-color: #444;
+            --input-bg: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0 20px;
+        }
+
+        h1 {
+            color: var(--main-color);
+            font-size: 3em;
+            margin-bottom: 5px;
+        }
+
+        h2 {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 40px;
+            color: var(--main-color);
+        }
+
+        /* Oyun ve Yükleme Bölümleri */
+        #swf-yukle-bolumu, .oyun-alani {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #swf-yukle-bolumu input[type="url"], #swf-yukle-bolumu button {
+            padding: 12px;
+            margin-right: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            font-size: 1em;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+        }
+
+        #swf-yukle-bolumu input[type="url"] {
+            width: calc(100% - 150px);
+            margin-bottom: 10px;
+        }
+
+        #swf-yukle-bolumu button {
+            background-color: var(--main-color);
+            color: #1a1a1a;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s;
+            width: 120px;
+        }
+
+        #swf-yukle-bolumu button:hover {
+            background-color: #00e5ff;
+        }
+
+        /* Oyun Listesi */
+        .oyun-listesi {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .oyun-kart {
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .oyun-kart:hover {
+            background-color: #3a3a3a;
+            transform: translateY(-3px);
+        }
+
+        .oyun-kart h3 {
+            margin: 0 0 5px 0;
+            color: var(--main-color);
+        }
+        
+        .oyun-kart p {
+            font-size: 0.9em;
+            color: #bbb;
+        }
+
+        /* Oyun Alanı */
+        .oyun-alani object, .oyun-alani embed {
+            display: block;
+            margin: 20px auto;
+            max-width: 100%;
+            height: 500px;
+            border: 2px solid var(--main-color);
+            border-radius: 5px;
+        }
+        
+        .oyun-alani p {
+            color: #999;
+            text-align: center;
+        }
+
+    </style>
+    <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+</head>
+<body>
+
+    <header>
+        <h1>More Games</h1>
+        <p>Adobe Flash Oyunlarını Ruffle Emülatörü ile Oynayın</p>
+    </header>
+
+    <div class="container">
+        
+        <div id="swf-yukle-bolumu">
+            <h2>Kendi SWF Dosyanızı Oynatın (URL Girin)</h2>
+            <input type="url" id="swf-url" placeholder="SWF dosyasının tam URL'sini girin..." required>
+            <button onclick="swfOynat()">Oynat</button>
+        </div>
+
+        <div class="oyun-alani" id="oyun-alani">
+            <p>Listeden bir oyun seçin veya yukarıdaki kutucuğa bir SWF URL'si girin.</p>
+        </div>
+
+        <h2>Hazır Oyunlar</h2>
+        <div class="oyun-listesi">
+            
+            <div class="oyun-kart" onclick="oyunYukle('https://ruffle.rs/demo/example.swf', 'Ruffle Demo')">
+                <h3>Ruffle Demo Testi</h3>
+                <p>Emülatörün çalıştığını kontrol edin.</p>
+            </div>
+            
+            <div class="oyun-kart" onclick="oyunYukle('https://uploads.ungrounded.net/513000/513063_Dad_N_Me.swf', 'Dad 'N Me')">
+                <h3>Dad 'N Me</h3>
+                <p>Klasik bir dövüş oyunu.</p>
+            </div>
+            
+            <div class="oyun-kart" onclick="oyunYukle('https://uploads.ungrounded.net/60000/60010_The_Impossible_Quiz.swf', 'The Impossible Quiz')">
+                <h3>The Impossible Quiz</h3>
+                <p>Beyin yakan sorular.</p>
+            </div>
+
+            <div class="oyun-kart" onclick="oyunYukle('https://uploads.ungrounded.net/3000/3932_Pico_s_School.swf', 'Pico\'s School')">
+                <h3>Pico's School</h3>
+                <p>Newgrounds klasiği.</p>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        // Oyun Yükleme Fonksiyonu (Aynı kaldı)
+        function oyunYukle(swfUrl, oyunAdi) {
+            const oyunAlani = document.getElementById('oyun-alani');
+            
+            // Oyun alanına yeni object/embed etiketini ekle
+            oyunAlani.innerHTML = `
+                <h2>Oynanıyor: ${oyunAdi}</h2>
+                <object data="${swfUrl}" type="application/x-shockwave-flash" width="100%" height="500">
+                    <param name="movie" value="${swfUrl}">
+                    <p>Ruffle yükleniyor...</p>
+                </object>
+            `;
+        }
+
+        // SWF URL Oynatma Fonksiyonu (Aynı kaldı)
+        function swfOynat() {
+            const swfUrlInput = document.getElementById('swf-url');
+            const url = swfUrlInput.value.trim();
+
+            if (url && url.toLowerCase().endsWith('.swf')) {
+                oyunYukle(url, "Kendi Yüklediğiniz Oyun");
+            } else {
+                alert("Lütfen geçerli bir SWF dosya URL'si girin. (Dosya yükleme değil, URL girmelisiniz)");
+            }
+        }
+    </script>
+
+</body>
+</html>
