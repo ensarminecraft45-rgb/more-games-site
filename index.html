@@ -133,7 +133,7 @@
             margin: 0;
             min-height: 100vh;
             text-align: center;
-            position: relative; /* Geri butonu için */
+            position: relative; 
         }
         
         /* Minecraft iFrame Stili */
@@ -143,7 +143,7 @@
             border: none;
         }
 
-        /* Flappy Bird Stilleri (Değişmedi) */
+        /* Flappy Bird Stilleri */
         #game-container {
             position: relative;
             width: 400px;
@@ -159,7 +159,7 @@
 
         /* Geri dön butonu (Flappy ve MC için ortak stil) */
         #flappy-back-btn, #mc-back-btn {
-            position: fixed; /* Sabit kalır */
+            position: fixed; 
             top: 20px;
             left: 20px;
             background: var(--card-bg);
@@ -174,8 +174,40 @@
             z-index: 1000;
         }
         
-        /* Diğer Flappy stilleri (yeniden başlat, renk butonları vb.) bu kodun içinde kalacaktır. */
-        .colorBtn, #restartBtn { /* ... Flappy stili ... */ } 
+        /* Flappy için diğer stiller */
+        .colorBtn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 4px solid white;
+            cursor: pointer;
+            font-size: 14px;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            font-family: 'Press Start 2P', monospace;
+            text-shadow: 1px 1px 2px black;
+        }
+        #restartBtn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 15px 30px;
+            font-size: 18px;
+            display: none;
+            cursor: pointer;
+            border-radius: 10px;
+            border: none;
+            background: #ff4d4d;
+            color: white;
+            font-family: 'Press Start 2P', monospace;
+            box-shadow: 0 5px #b30000;
+        }
+
     </style>
     <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
 </head>
@@ -213,11 +245,6 @@
                     <p>HTML5 Klasik. Reflekslerini sına!</p>
                 </div>
                 
-                <div class="oyun-kart" onclick="oyunYukle('https://ruffle.rs/demo/example.swf', '3D Blok Yapma Oyunu (Örnek)')">
-                    <h3>Minecraft Benzeri Yapım</h3>
-                    <p>Basit 3D/Blok tarzı yapım oyunları (Flash).</p>
-                </div>
-                
                 <div class="oyun-kart" onclick="oyunYukle('https://uploads.ungrounded.net/449000/449272_run_2.swf', 'Beceri Parkuru: Koşu 2')">
                     <h3>Obby / Beceri Parkuru</h3>
                     <p>Hızlı refleks gerektiren platform (Flash).</p>
@@ -233,7 +260,7 @@
                     <p>Akrobatik motor yarışları (Flash).</p>
                 </div>
                 
-            </div>
+                </div>
         </div>
     </section>
 
@@ -258,56 +285,53 @@
         // DOM Elementleri
         const mainSection = document.getElementById('main-section');
         const flappySection = document.getElementById('flappy-bird-section');
-        const classicMcSection = document.getElementById('classic-mc-section'); // YENİ
-        const classicMcIframe = document.getElementById('classic-mc-iframe'); // YENİ
+        const classicMcSection = document.getElementById('classic-mc-section'); 
+        const classicMcIframe = document.getElementById('classic-mc-iframe'); 
+        const flashOyunAlani = document.getElementById('flash-oyun-alani');
         
         // **********************************
         // A) SİTE GEÇİŞ YÖNETİMİ
         // **********************************
 
-        // Flappy Bird Bölümünü Göster
         function showFlappyBird() {
-            // Diğerlerini gizle
             mainSection.style.display = 'none';
             classicMcSection.style.display = 'none';
-            classicMcIframe.src = ''; // Classic MC iframe'i temizle
+            classicMcIframe.src = ''; 
             
             flappySection.style.display = 'block';
-            init(); // Flappy'yi başlat
+            init(); 
             document.body.style.margin = '0';
+            document.body.style.overflow = 'hidden'; // Flappy için kaydırmayı kapat
         }
         
-        // Classic Minecraft Bölümünü Göster (YENİ)
         function showClassicMC() {
-            // Diğerlerini gizle
             mainSection.style.display = 'none';
             flappySection.style.display = 'none';
-            removeFlappyListeners(); // Flappy listener'larını kaldır
+            removeFlappyListeners(); 
 
             classicMcSection.style.display = 'block';
-            // iframe'i yükle
             classicMcIframe.src = 'https://classic.minecraft.net/'; 
             
             document.body.style.margin = '0';
             document.body.style.padding = '0';
+            document.body.style.overflow = 'hidden'; // MC için kaydırmayı kapat
         }
 
-        // Ana Sayfa Bölümünü Göster (Tüm oyunları kapatır)
         function showMainSection() {
             flappySection.style.display = 'none';
             classicMcSection.style.display = 'none';
-            classicMcIframe.src = ''; // iframe'i temizle
+            classicMcIframe.src = ''; 
             
             mainSection.style.display = 'block';
             removeFlappyListeners();
             
-            // Body stilini ana sayfa için geri al
             document.body.style.margin = 'inherit'; 
             document.body.style.padding = 'inherit'; 
+            document.body.style.overflow = 'auto'; // Ana sayfa için kaydırmayı aç
         }
 
         // **********************************
-        // B) FLASH OYUNLARI VE YÜKLEME (Değişmedi)
+        // B) FLASH OYUNLARI VE YÜKLEME
         // **********************************
 
         function oyunYukle(swfUrl, oyunAdi) {
@@ -329,7 +353,6 @@
             const file = event.target.files[0];
             if (!file) return;
 
-            // Eğer diğer oyunlar açıksa kapat
             if (flappySection.style.display === 'block' || classicMcSection.style.display === 'block') {
                  showMainSection();
             }
@@ -353,7 +376,8 @@
         // **********************************
         // C) FLAPPY BIRD OYUN MANTIĞI (Kısaltıldı/Değişmedi)
         // **********************************
-
+        
+        // [ Flappy Bird Oyun Mantığı Kodları Buradan Başlar ]
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
         const redBtn = document.getElementById("redBtn");
@@ -365,9 +389,7 @@
         let gameStarted = false;
 
         function init() {
-            // Animasyon varsa durdur
             if(animationFrameId) cancelAnimationFrame(animationFrameId);
-
             bird = { x: 80, y: 300, radius: 15, gravity: 0.6, velocity: 0, lift: -12, wing: 0, mouthOpen: true };
             pipes = [];
             frame = 0;
@@ -379,7 +401,6 @@
             yellowBtn.style.display = "block";
             blueBtn.style.display = "block";
             drawBackground(); 
-
             addFlappyListeners();
         }
 
@@ -420,14 +441,14 @@
             update();
         }
 
-        function createPipe() { /* ... Pipe oluşturma kodları ... */
+        function createPipe() { 
             let gap = 140;
             let height = Math.random() * 200 + 50;
             pipes.push({ x: canvas.width, y: 0, width: 50, height: height, passed: false });
             pipes.push({ x: canvas.width, y: height + gap, width: 50, height: canvas.height - height - gap, passed: false });
         }
 
-        function drawBackground() { /* ... Arka plan çizim kodları ... */
+        function drawBackground() { 
             ctx.fillStyle = "#70c5ce"; ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "#f4d35e"; ctx.beginPath(); ctx.arc(350, 80, 40, 0, Math.PI * 2); ctx.fill();
             ctx.fillStyle = "rgba(255,255,255,0.8)";
@@ -437,7 +458,7 @@
             ctx.fillStyle = "rgba(0,0,0,0.2)"; ctx.fillRect(0, canvas.height - 50, canvas.width, 10);
         }
 
-        function drawBird() { /* ... Kuş çizim kodları ... */
+        function drawBird() { 
             ctx.save();
             ctx.translate(bird.x, bird.y);
             let angle = Math.min(Math.max(bird.velocity * 2, -30), 90) * Math.PI / 180;
@@ -462,7 +483,7 @@
             if (bird.wing > 0) bird.wing -= 0.1;
         }
 
-        function drawPipes() { /* ... Boru çizim kodları ... */
+        function drawPipes() { 
             pipes.forEach(pipe => {
                 ctx.fillStyle = "#2e7d32"; ctx.fillRect(pipe.x, pipe.y, pipe.width, pipe.height);
                 ctx.fillStyle = "rgba(0,0,0,0.2)";
@@ -500,8 +521,8 @@
             frame++;
             animationFrameId = requestAnimationFrame(update);
         }
+        // [ Flappy Bird Oyun Mantığı Kodları Buradan Sona Erer ]
 
-        // Sayfa yüklendiğinde Flash oyun alanını göster ve diğerlerini gizle
         document.addEventListener('DOMContentLoaded', showMainSection);
 
     </script>
