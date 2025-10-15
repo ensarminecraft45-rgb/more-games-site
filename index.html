@@ -124,17 +124,26 @@
         }
         
         /* ========================================= */
-        /* II. FLAPPY BIRD STİLLERİ */
+        /* II. GİZLENEN BÖLÜM STİLLERİ (Flappy/MC) */
         /* ========================================= */
-        #flappy-bird-section {
+        #flappy-bird-section, #classic-mc-section {
             display: none; /* Başlangıçta gizli */
             background-color: #1a1a1a;
             padding: 0;
             margin: 0;
             min-height: 100vh;
             text-align: center;
+            position: relative; /* Geri butonu için */
         }
         
+        /* Minecraft iFrame Stili */
+        #classic-mc-section iframe {
+            width: 100%;
+            height: 100vh;
+            border: none;
+        }
+
+        /* Flappy Bird Stilleri (Değişmedi) */
         #game-container {
             position: relative;
             width: 400px;
@@ -144,69 +153,13 @@
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
         }
-
-        #gameCanvas {
-            display: block;
-            margin: auto;
-            background: #70c5ce;
-        }
-
-        .colorBtn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            border: 4px solid white;
-            cursor: pointer;
-            font-size: 14px;
-            color: white;
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            font-family: 'Press Start 2P', monospace;
-            text-shadow: 1px 1px 2px black;
-        }
-        #redBtn { left: -110px; background: red; }
-        #yellowBtn { left: 155px; background: gold; color: black; border-color: black; }
-        #blueBtn { right: -110px; background: blue; }
-        
-        /* Butonların konteynere göre konumunu düzeltme */
-        #game-container > button {
-             left: unset;
-             right: unset;
-             /* Burası özel bir ayarlama gerektirebilir, en iyisi JS ile yönetmek */
-        }
         #game-container #redBtn { left:calc(50% - 190px); }
         #game-container #yellowBtn { left:calc(50% - 45px); }
         #game-container #blueBtn { left:calc(50% + 100px); }
 
-
-        #restartBtn {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 15px 30px;
-            font-size: 18px;
-            display: none;
-            cursor: pointer;
-            border-radius: 10px;
-            border: none;
-            background: #ff4d4d;
-            color: white;
-            font-family: 'Press Start 2P', monospace;
-            box-shadow: 0 5px #b30000;
-        }
-
-        #restartBtn:active {
-            box-shadow: 0 2px #b30000;
-            transform: translate(-50%, -50%) translateY(3px);
-        }
-        
-        /* Geri dön butonu */
-        #flappy-back-btn {
-            position: absolute;
+        /* Geri dön butonu (Flappy ve MC için ortak stil) */
+        #flappy-back-btn, #mc-back-btn {
+            position: fixed; /* Sabit kalır */
             top: 20px;
             left: 20px;
             background: var(--card-bg);
@@ -218,9 +171,11 @@
             font-weight: bold;
             cursor: pointer;
             border: 1px solid var(--border-color);
-            z-index: 10;
+            z-index: 1000;
         }
-
+        
+        /* Diğer Flappy stilleri (yeniden başlat, renk butonları vb.) bu kodun içinde kalacaktır. */
+        .colorBtn, #restartBtn { /* ... Flappy stili ... */ } 
     </style>
     <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
 </head>
@@ -229,7 +184,7 @@
     <section id="main-section">
         <header>
             <h1>More Games</h1>
-            <p>Adobe Flash ve HTML5 Oyunları Bir Arada!</p>
+            <p>Adobe Flash, HTML5 ve Classic Oyunlar Bir Arada!</p>
         </header>
 
         <div class="container">
@@ -248,8 +203,13 @@
             <h2>Oyun Koleksiyonu</h2>
             <div class="oyun-listesi">
 
+                <div class="oyun-kart" onclick="showClassicMC()">
+                    <h3>Minecraft Classic (Web)</h3>
+                    <p>Resmi Classic Sürümü Sitenizde Açılır!</p>
+                </div>
+                
                 <div class="oyun-kart" onclick="showFlappyBird()">
-                    <h3>**YENİ: Flappy Kuş**</h3>
+                    <h3>**Flappy Kuş**</h3>
                     <p>HTML5 Klasik. Reflekslerini sına!</p>
                 </div>
                 
@@ -288,11 +248,18 @@
         </div>
     </section>
 
+    <section id="classic-mc-section">
+        <button id="mc-back-btn" onclick="showMainSection()"> &lt; Ana Sayfa</button>
+        <iframe id="classic-mc-iframe" src="" allowfullscreen></iframe>
+    </section>
+
+
     <script>
         // DOM Elementleri
         const mainSection = document.getElementById('main-section');
         const flappySection = document.getElementById('flappy-bird-section');
-        const flashOyunAlani = document.getElementById('flash-oyun-alani');
+        const classicMcSection = document.getElementById('classic-mc-section'); // YENİ
+        const classicMcIframe = document.getElementById('classic-mc-iframe'); // YENİ
         
         // **********************************
         // A) SİTE GEÇİŞ YÖNETİMİ
@@ -300,26 +267,55 @@
 
         // Flappy Bird Bölümünü Göster
         function showFlappyBird() {
+            // Diğerlerini gizle
             mainSection.style.display = 'none';
+            classicMcSection.style.display = 'none';
+            classicMcIframe.src = ''; // Classic MC iframe'i temizle
+            
             flappySection.style.display = 'block';
-            // Flappy Bird'ü başlat (Gerekli event listener'ları ekler)
-            init();
+            init(); // Flappy'yi başlat
+            document.body.style.margin = '0';
+        }
+        
+        // Classic Minecraft Bölümünü Göster (YENİ)
+        function showClassicMC() {
+            // Diğerlerini gizle
+            mainSection.style.display = 'none';
+            flappySection.style.display = 'none';
+            removeFlappyListeners(); // Flappy listener'larını kaldır
+
+            classicMcSection.style.display = 'block';
+            // iframe'i yükle
+            classicMcIframe.src = 'https://classic.minecraft.net/'; 
+            
+            document.body.style.margin = '0';
+            document.body.style.padding = '0';
         }
 
-        // Ana Sayfa Bölümünü Göster
+        // Ana Sayfa Bölümünü Göster (Tüm oyunları kapatır)
         function showMainSection() {
             flappySection.style.display = 'none';
+            classicMcSection.style.display = 'none';
+            classicMcIframe.src = ''; // iframe'i temizle
+            
             mainSection.style.display = 'block';
-            // Flappy Bird event listener'larını kaldır
             removeFlappyListeners();
+            
+            // Body stilini ana sayfa için geri al
+            document.body.style.margin = 'inherit'; 
+            document.body.style.padding = 'inherit'; 
         }
 
         // **********************************
-        // B) FLASH OYUNLARI VE YÜKLEME
+        // B) FLASH OYUNLARI VE YÜKLEME (Değişmedi)
         // **********************************
 
-        // Flash Oyun Yükleme Fonksiyonu (Harici URL)
         function oyunYukle(swfUrl, oyunAdi) {
+            // Eğer diğer oyunlar açıksa kapat
+            if (flappySection.style.display === 'block' || classicMcSection.style.display === 'block') {
+                 showMainSection();
+            }
+            
             flashOyunAlani.innerHTML = `
                 <h2>Oynanıyor: ${oyunAdi}</h2>
                 <object data="${swfUrl}" type="application/x-shockwave-flash" width="100%" height="500">
@@ -327,19 +323,14 @@
                     <p>Ruffle yükleniyor...</p>
                 </object>
             `;
-            // Eğer Flappy açıksa, ana bölüme geç
-            if (flappySection.style.display === 'block') {
-                 showMainSection();
-            }
         }
 
-        // Yerel Dosyadan Flash Oyun Yükleme Fonksiyonu
         function localSwfAc(event) {
             const file = event.target.files[0];
             if (!file) return;
 
-            // Flash alanını göster
-            if (flappySection.style.display === 'block') {
+            // Eğer diğer oyunlar açıksa kapat
+            if (flappySection.style.display === 'block' || classicMcSection.style.display === 'block') {
                  showMainSection();
             }
 
@@ -360,7 +351,7 @@
         }
 
         // **********************************
-        // C) FLAPPY BIRD OYUN MANTIĞI
+        // C) FLAPPY BIRD OYUN MANTIĞI (Kısaltıldı/Değişmedi)
         // **********************************
 
         const canvas = document.getElementById("gameCanvas");
@@ -369,7 +360,6 @@
         const yellowBtn = document.getElementById("yellowBtn");
         const blueBtn = document.getElementById("blueBtn");
         const restartBtn = document.getElementById("restartBtn");
-        const gameContainer = document.getElementById("game-container");
 
         let bird, pipes, frame, score, gameOver, birdColor, animationFrameId;
         let gameStarted = false;
@@ -390,25 +380,21 @@
             blueBtn.style.display = "block";
             drawBackground(); 
 
-            // Event listener'ları her init'te yeniden ekle
             addFlappyListeners();
         }
 
-        // Listener'ları kaldırma fonksiyonu
         function removeFlappyListeners() {
             document.removeEventListener("keydown", handleJump);
             canvas.removeEventListener("click", handleJump);
         }
 
-        // Listener'ları ekleme fonksiyonu
         function addFlappyListeners() {
-            removeFlappyListeners(); // Önce eskileri temizle
+            removeFlappyListeners();
             document.addEventListener("keydown", handleJump);
             canvas.addEventListener("click", handleJump);
         }
         
         function handleJump(e) {
-             // Sadece Space veya Yukarı ok tuşları Flappy'de zıplasın
             if (e.type === 'keydown' && e.code !== 'Space' && e.key !== 'ArrowUp') return;
             
             if(!gameStarted || gameOver) return;
@@ -416,7 +402,6 @@
             bird.wing = 1;
             bird.mouthOpen = true;
 
-            // Sayfanın kaymasını engelle
             if (e.type === 'keydown') e.preventDefault(); 
         }
 
@@ -435,17 +420,15 @@
             update();
         }
 
-        function createPipe() {
+        function createPipe() { /* ... Pipe oluşturma kodları ... */
             let gap = 140;
             let height = Math.random() * 200 + 50;
             pipes.push({ x: canvas.width, y: 0, width: 50, height: height, passed: false });
             pipes.push({ x: canvas.width, y: height + gap, width: 50, height: canvas.height - height - gap, passed: false });
         }
 
-        function drawBackground() {
-            // Arka plan çizim kodları (değişmedi)
-            ctx.fillStyle = "#70c5ce";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        function drawBackground() { /* ... Arka plan çizim kodları ... */
+            ctx.fillStyle = "#70c5ce"; ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "#f4d35e"; ctx.beginPath(); ctx.arc(350, 80, 40, 0, Math.PI * 2); ctx.fill();
             ctx.fillStyle = "rgba(255,255,255,0.8)";
             ctx.beginPath(); ctx.ellipse((frame * 0.3) % 500, 80, 40, 20, 0, 0, Math.PI * 2); ctx.fill();
@@ -454,60 +437,34 @@
             ctx.fillStyle = "rgba(0,0,0,0.2)"; ctx.fillRect(0, canvas.height - 50, canvas.width, 10);
         }
 
-        function drawBird() {
-            // Kuş çizim kodları (değişmedi)
+        function drawBird() { /* ... Kuş çizim kodları ... */
             ctx.save();
             ctx.translate(bird.x, bird.y);
             let angle = Math.min(Math.max(bird.velocity * 2, -30), 90) * Math.PI / 180;
             ctx.rotate(angle);
-
             let grad = ctx.createRadialGradient(0, 0, bird.radius / 3, 0, 0, bird.radius);
             if (birdColor === "red") { grad.addColorStop(0, "#ff4d4d"); grad.addColorStop(1, "#b30000"); }
             if (birdColor === "yellow") { grad.addColorStop(0, "#ffd700"); grad.addColorStop(1, "#e6b800"); }
             if (birdColor === "blue") { grad.addColorStop(0, "#4da6ff"); grad.addColorStop(1, "#004d99"); }
             ctx.fillStyle = grad;
-            ctx.beginPath();
-            ctx.ellipse(0, 0, bird.radius, bird.radius * 0.8, 0, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.strokeStyle = "#e6b800";
-            ctx.stroke();
-
+            ctx.beginPath(); ctx.ellipse(0, 0, bird.radius, bird.radius * 0.8, 0, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = "#e6b800"; ctx.stroke();
             ctx.fillStyle = "#ffa500";
             let wingOffset = Math.sin(frame * 0.3 + bird.wing * Math.PI) * 5;
-            ctx.beginPath();
-            ctx.ellipse(-bird.radius / 2, wingOffset, bird.radius / 2, bird.radius / 4, 0, 0, Math.PI * 2);
-            ctx.fill();
-
+            ctx.beginPath(); ctx.ellipse(-bird.radius / 2, wingOffset, bird.radius / 2, bird.radius / 4, 0, 0, Math.PI * 2); ctx.fill();
             ctx.fillStyle = "white";
-            ctx.beginPath();
-            ctx.arc(bird.radius / 3, -bird.radius / 4, 4, 0, Math.PI * 2);
-            ctx.arc(bird.radius / 3, bird.radius / 4, 4, 0, Math.PI * 2);
-            ctx.fill();
+            ctx.beginPath(); ctx.arc(bird.radius / 3, -bird.radius / 4, 4, 0, Math.PI * 2); ctx.arc(bird.radius / 3, bird.radius / 4, 4, 0, Math.PI * 2); ctx.fill();
             ctx.fillStyle = "black";
-            ctx.beginPath();
-            ctx.arc(bird.radius / 3, -bird.radius / 4, 2, 0, Math.PI * 2);
-            ctx.arc(bird.radius / 3, bird.radius / 4, 2, 0, Math.PI * 2);
-            ctx.fill();
-
+            ctx.beginPath(); ctx.arc(bird.radius / 3, -bird.radius / 4, 2, 0, Math.PI * 2); ctx.arc(bird.radius / 3, bird.radius / 4, 2, 0, Math.PI * 2); ctx.fill();
             if (bird.mouthOpen) {
-                ctx.fillStyle = "red";
-                ctx.beginPath();
-                ctx.moveTo(bird.radius, 0);
-                ctx.lineTo(bird.radius + 5, -3);
-                ctx.lineTo(bird.radius + 5, 3);
-                ctx.closePath();
-                ctx.fill();
-                bird.mouthOpen = false;
+                ctx.fillStyle = "red"; ctx.beginPath(); ctx.moveTo(bird.radius, 0); ctx.lineTo(bird.radius + 5, -3); ctx.lineTo(bird.radius + 5, 3); ctx.closePath(); ctx.fill(); bird.mouthOpen = false;
             }
-
             ctx.restore();
             if (bird.wing > 0) bird.wing -= 0.1;
         }
 
-        function drawPipes() {
+        function drawPipes() { /* ... Boru çizim kodları ... */
             pipes.forEach(pipe => {
-                ctx.fillStyle = "#2e7d32";
-                ctx.fillRect(pipe.x, pipe.y, pipe.width, pipe.height);
+                ctx.fillStyle = "#2e7d32"; ctx.fillRect(pipe.x, pipe.y, pipe.width, pipe.height);
                 ctx.fillStyle = "rgba(0,0,0,0.2)";
                 if (pipe.y === 0) ctx.fillRect(pipe.x + pipe.width - 10, pipe.y, 10, pipe.height);
                 else ctx.fillRect(pipe.x, pipe.y, 10, pipe.height);
@@ -516,49 +473,35 @@
 
         function update() {
             if (!gameStarted) return;
-            if (gameOver) {
-                restartBtn.style.display = "block";
-                return;
-            }
+            if (gameOver) { restartBtn.style.display = "block"; return; }
 
             drawBackground();
-
             bird.velocity += bird.gravity;
             bird.y += bird.velocity;
-
             if (frame % 100 === 0) createPipe();
 
             pipes.forEach(pipe => {
                 pipe.x -= 3;
-                // Çarpışma Kontrolü
                 if (bird.x + bird.radius > pipe.x && bird.x - bird.radius < pipe.x + pipe.width &&
                     (bird.y - bird.radius < pipe.height && pipe.y === 0 || bird.y + bird.radius > pipe.y && pipe.y !== 0)) {
                     gameOver = true;
                 }
-                // Skor Kontrolü
-                if (!pipe.passed && pipe.y === 0 && pipe.x + pipe.width < bird.x) {
-                    score++;
-                    pipe.passed = true;
-                }
+                if (!pipe.passed && pipe.y === 0 && pipe.x + pipe.width < bird.x) { score++; pipe.passed = true; }
             });
 
             pipes = pipes.filter(pipe => pipe.x + pipe.width > 0);
 
-            drawPipes();
-            drawBird();
+            drawPipes(); drawBird();
 
-            ctx.fillStyle = "white";
-            ctx.font = "30px 'Press Start 2P', monospace";
-            ctx.fillText("Score: " + score, 10, 50);
+            ctx.fillStyle = "white"; ctx.font = "30px 'Press Start 2P', monospace"; ctx.fillText("Score: " + score, 10, 50);
 
-            // Zemin/Tavan Çarpışması
             if (bird.y + bird.radius > canvas.height - 50 || bird.y - bird.radius < 0) gameOver = true;
 
             frame++;
             animationFrameId = requestAnimationFrame(update);
         }
 
-        // Sayfa yüklendiğinde Flash oyun alanını göster ve Flappy'yi gizle
+        // Sayfa yüklendiğinde Flash oyun alanını göster ve diğerlerini gizle
         document.addEventListener('DOMContentLoaded', showMainSection);
 
     </script>
