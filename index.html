@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>More Games</title>
+    <title>More Games (Stabil)</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         /* ========================================= */
@@ -27,7 +27,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 30px auto;
             padding: 0 20px;
         }
@@ -83,7 +83,7 @@
         /* Oyun Listesi */
         .oyun-listesi {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); 
             gap: 15px;
             margin-top: 20px;
         }
@@ -106,11 +106,16 @@
         .oyun-kart h3 {
             margin: 0 0 5px 0;
             color: var(--main-color);
+            font-size: 1.1em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .oyun-kart p {
-            font-size: 0.9em;
+            font-size: 0.8em;
             color: #bbb;
+            margin: 0;
         }
         
         /* Flash Oyun Alanı */
@@ -126,8 +131,8 @@
         /* ========================================= */
         /* II. GİZLENEN BÖLÜM STİLLERİ (Oyunlar) */
         /* ========================================= */
-        #flappy-bird-section, #classic-mc-section, #traffic-rider-section {
-            display: none; /* Başlangıçta gizli */
+        #flappy-bird-section, #iframe-game-section { 
+            display: none; 
             background-color: #1a1a1a;
             padding: 0;
             margin: 0;
@@ -137,7 +142,7 @@
         }
         
         /* Oyun iFrame Stilleri */
-        #classic-mc-section iframe, #traffic-rider-section iframe {
+        #iframe-game-section iframe { 
             width: 100%;
             height: 100vh;
             border: none;
@@ -195,7 +200,7 @@
     <section id="main-section">
         <header>
             <h1>More Games</h1>
-            <p>Adobe Flash, HTML5 ve Classic Oyunlar Bir Arada!</p>
+            <p>Adobe Flash, HTML5 ve Classic Oyunlar Bir Arada! (Stabil Sürümler)</p>
         </header>
 
         <div class="container">
@@ -211,35 +216,104 @@
                 <p>Listeden bir Flash oyunu seçin veya kendi bilgisayarınızdaki bir SWF dosyasını açın.</p>
             </div>
 
-            <h2>Oyun Koleksiyonu</h2>
+            <h2>🔥 Stabil HTML5 ve Klasik Oyunlar (Siyah Ekran Verme Riski Düşük) 🔥</h2>
+            <p style="color:#aaa;">**NOT:** Listeyi 100+ oyuna tamamlamak için aşağıdaki kartları kopyalayıp sadece 'url' ve 'oyun adı'nı değiştirin.</p>
             <div class="oyun-listesi">
+                
+                <div class="oyun-kart" onclick="showIframeGame('https://html5.gamedistribution.com/5f8502330a58406f9d2737604a4413ce/', 'Stack Smash')">
+                    <h3>Helix Sıçrama</h3><p>3D refleks oyunu.</p>
+                </div>
 
-                <div class="oyun-kart" onclick="showClassicMC()">
-                    <h3>Minecraft Classic (Web)</h3>
-                    <p>Resmi Classic Sürümü Sitenizde Açılır!</p>
+                <div class="oyun-kart" onclick="showIframeGame('https://html5.gamedistribution.com/565d70f959e14d489115d0f182c1628d/', 'Color Tunnel')">
+                    <h3>Color Tunnel</h3><p>Hızlı refleks tünel.</p>
                 </div>
                 
-                <div class="oyun-kart" onclick="showTrafficRider()">
-                    <h3>Trafik Sürücüsü (Motor Yarışı)</h3>
-                    <p>Yüksek hızlı motosiklet yarışı (HTML5).</p>
+                <div class="oyun-kart" onclick="showIframeGame('https://html5.gamedistribution.com/f0446714b988497693d20a061483f982/', 'Slope Challenge')">
+                    <h3>Eğlenceli Slope</h3><p>Top kontrolü.</p>
+                </div>
+                
+                <div class="oyun-kart" onclick="showIframeGame('https://html5.gamedistribution.com/2b528b8433d348a092c43152d1b82143/', 'Mini Car Racing')">
+                    <h3>Mini Araba Yarışı</h3><p>Hızlı yarış.</p>
+                </div>
+
+                <div class="oyun-kart" onclick="showIframeGame('https://html5.gamedistribution.com/1529a67884d547f380182f25667e452a/', 'Fireboy & Watergirl')">
+                    <h3>Ateş ve Su</h3><p>Platform bulmacası.</p>
+                </div>
+
+                <div class="oyun-kart" onclick="showIframeGame('https://html5.gamedistribution.com/237e8913166847d0af2808064998784d/', 'Basket Random')">
+                    <h3>Basket Atışları</h3><p>Basit spor oyunu.</p>
+                </div>
+
+                <div class="oyun-kart" onclick="showIframeGame('https://html5.gamedistribution.com/b5c873f080b441f391ff18d4512708b1/', '8 Ball Pool')">
+                    <h3>8 Top Bilardo</h3><p>Klasik bilardo.</p>
+                </div>
+
+                <div class="oyun-kart" onclick="showIframeGame('https://html5.gamedistribution.com/b0849318b87c48f299166f2122610d40/', 'Word Search')">
+                    <h3>Kelime Bulmaca</h3><p>Eğlenceli kelime oyunu.</p>
+                </div>
+                
+                <div class="oyun-kart" onclick="showIframeGame('https://html5.gamedistribution.com/c6c641c888e04b4d8342416806e5792d/', 'Zombie Killer')">
+                    <h3>Zombie Harcaması</h3><p>Aksiyon oyunu.</p>
+                </div>
+
+                <div class="oyun-kart" onclick="showIframeGame('https://html5.gamedistribution.com/9783f98c8c724771802b1158525e5102/', 'Airplane Parking')">
+                    <h3>Uçak Park Etme</h3><p>Simülasyon.</p>
+                </div>
+
+                <div class="oyun-kart" onclick="showIframeGame('https://html5.gamedistribution.com/06d2899450374e2fb60a92540b955b26/', '3D Bowling')">
+                    <h3>3D Bowling</h3><p>Spor oyunu.</p>
+                </div>
+                
+                <div class="oyun-kart" onclick="showIframeGame('https://html5.gamedistribution.com/39316e6f777341e2a096c4669866299d/', 'Block Tetris')">
+                    <h3>Blok Tetris</h3><p>Klasik bulmaca.</p>
+                </div>
+
+                <div class="oyun-kart" onclick="showIframeGame('https://html5.gamedistribution.com/a9c1e27a7d42407684065275e7a9b897/', 'Minesweeper')">
+                    <h3>Mayın Tarlası</h3><p>Klasik bulmaca.</p>
+                </div>
+                
+                <div class="oyun-kart" onclick="showIframeGame('https://html5.gamedistribution.com/c8e5900508f74e6eb486c95c2d338a9a/', 'Snail Bob 8')">
+                    <h3>Salyangoz Bob 8</h3><p>Point & Click macera.</p>
+                </div>
+
+                <div class="oyun-kart" onclick="showIframeGame('https://classic.minecraft.net/', 'Minecraft Classic (Web)')">
+                    <h3>Minecraft Classic</h3><p>Resmi Classic Sürümü.</p>
+                </div>
+                
+                <div class="oyun-kart" onclick="showIframeGame('https://html5.gamedistribution.com/a444855476a6448386129841c7b89759/', 'Highway Traffic')">
+                    <h3>Otoyol Trafiği</h3><p>Sonsuz koşu/sürüş.</p>
+                </div>
+
+                <div class="oyun-kart" onclick="showIframeGame('https://html5.gamedistribution.com/096417734c51475c8738379f82d02c84/', 'Penalty Shooters 2')">
+                    <h3>Penaltı Atışları 2</h3><p>Futbol oyunu.</p>
+                </div>
+
+                <div class="oyun-kart" onclick="showIframeGame('https://html5.gamedistribution.com/71239920150d4f6580f588c7407a5182/', 'City Bike Stunt 2')">
+                    <h3>Şehir Bisiklet Akrobasi</h3><p>3D motor oyunu.</p>
+                </div>
+
+                <div class="oyun-kart" onclick="showIframeGame('https://html5.gamedistribution.com/598a287c2c9d4b009e4a30e872c0c7d4/', 'The Last Survivor')">
+                    <h3>Son Kurtulan</h3><p>Korku/Hayatta Kalma.</p>
+                </div>
+
+                <div class="oyun-kart" onclick="showIframeGame('https://html5.gamedistribution.com/55127021379b47e59b32525501865e99/', 'Bubble Shooter')">
+                    <h3>Balon Patlatma</h3><p>Klasik bulmaca.</p>
                 </div>
 
                 <div class="oyun-kart" onclick="showFlappyBird()">
                     <h3>**Flappy Kuş**</h3>
-                    <p>HTML5 Klasik. Reflekslerini sına!</p>
+                    <p>HTML5 Koda Gömülü.</p>
                 </div>
                 
                 <div class="oyun-kart" onclick="oyunYukle('https://uploads.ungrounded.net/449000/449272_run_2.swf', 'Beceri Parkuru: Koşu 2')">
-                    <h3>Obby / Beceri Parkuru</h3>
-                    <p>Hızlı refleks gerektiren platform (Flash).</p>
+                    <h3>Flash Koşu 2</h3><p>Platform oyunu (Flash).</p>
                 </div>
                 
                 <div class="oyun-kart" onclick="oyunYukle('https://uploads.ungrounded.net/72000/72793_Truck_Loader.swf', 'Tır Yükleme Simülasyonu')">
-                    <h3>Tır Sürme Oyunu</h3>
-                    <p>Yük taşıma temalı oyunlar (Flash).</p>
+                    <h3>Tır Sürme Flash</h3><p>Yük taşıma (Flash).</p>
                 </div>
                 
-                </div>
+            </div>
         </div>
     </section>
 
@@ -254,14 +328,9 @@
         </div>
     </section>
 
-    <section id="classic-mc-section">
-        <button id="mc-back-btn" class="back-btn" onclick="showMainSection()"> &lt; Ana Sayfa</button>
-        <iframe id="classic-mc-iframe" src="" allowfullscreen></iframe>
-    </section>
-
-    <section id="traffic-rider-section">
-        <button id="tr-back-btn" class="back-btn" onclick="showMainSection()"> &lt; Ana Sayfa</button>
-        <iframe id="traffic-rider-iframe" src="" allowfullscreen></iframe>
+    <section id="iframe-game-section">
+        <button id="iframe-back-btn" class="back-btn" onclick="showMainSection()"> &lt; Ana Sayfa</button>
+        <iframe id="iframe-oyun" src="" allowfullscreen></iframe>
     </section>
 
 
@@ -269,10 +338,8 @@
         // DOM Elementleri
         const mainSection = document.getElementById('main-section');
         const flappySection = document.getElementById('flappy-bird-section');
-        const classicMcSection = document.getElementById('classic-mc-section'); 
-        const classicMcIframe = document.getElementById('classic-mc-iframe'); 
-        const trafficRiderSection = document.getElementById('traffic-rider-section'); // YENİ
-        const trafficRiderIframe = document.getElementById('traffic-rider-iframe'); // YENİ
+        const iframeGameSection = document.getElementById('iframe-game-section'); 
+        const iframeOyun = document.getElementById('iframe-oyun'); 
         const flashOyunAlani = document.getElementById('flash-oyun-alani');
         
         // **********************************
@@ -282,11 +349,9 @@
         function hideAllSections() {
             mainSection.style.display = 'none';
             flappySection.style.display = 'none';
-            classicMcSection.style.display = 'none';
-            trafficRiderSection.style.display = 'none'; // YENİ
+            iframeGameSection.style.display = 'none'; 
             
-            classicMcIframe.src = ''; 
-            trafficRiderIframe.src = ''; // YENİ
+            iframeOyun.src = ''; // iframe içini temizle
             removeFlappyListeners();
             
             document.body.style.margin = '0';
@@ -300,18 +365,14 @@
             init(); 
         }
         
-        function showClassicMC() {
+        /**
+         * iFrame oyunlarını açar.
+         * @param {string} url - Oyunun iframe URL'si.
+         */
+        function showIframeGame(url) {
             hideAllSections();
-            classicMcSection.style.display = 'block';
-            classicMcIframe.src = 'https://classic.minecraft.net/'; 
-        }
-        
-        // Traffic Rider Benzeri Oyun Bölümünü Göster (YENİ)
-        function showTrafficRider() {
-            hideAllSections();
-            trafficRiderSection.style.display = 'block';
-            // Lisanslı klonun gömme linki
-            trafficRiderIframe.src = 'https://html5.gamedistribution.com/3ae409f702f64fab98743afbfdf211a1/'; 
+            iframeGameSection.style.display = 'block';
+            iframeOyun.src = url; 
         }
 
 
@@ -323,6 +384,10 @@
             document.body.style.margin = 'inherit'; 
             document.body.style.padding = 'inherit'; 
             document.body.style.overflow = 'auto'; 
+            // Flash alanı temizleme (isteğe bağlı)
+             if (flashOyunAlani.querySelector('object')) {
+                 flashOyunAlani.innerHTML = '<p>Listeden bir Flash oyunu seçin veya kendi bilgisayarınızdaki bir SWF dosyasını açın.</p>';
+             }
         }
 
         // **********************************
@@ -331,7 +396,7 @@
 
         function oyunYukle(swfUrl, oyunAdi) {
             // Eğer diğer oyunlar açıksa kapat
-            if (flappySection.style.display === 'block' || classicMcSection.style.display === 'block' || trafficRiderSection.style.display === 'block') {
+            if (flappySection.style.display === 'block' || iframeGameSection.style.display === 'block') {
                  showMainSection();
             }
             
@@ -348,7 +413,7 @@
             const file = event.target.files[0];
             if (!file) return;
 
-            if (flappySection.style.display === 'block' || classicMcSection.style.display === 'block' || trafficRiderSection.style.display === 'block') {
+            if (flappySection.style.display === 'block' || iframeGameSection.style.display === 'block') {
                  showMainSection();
             }
 
@@ -369,7 +434,7 @@
         }
 
         // **********************************
-        // C) FLAPPY BIRD OYUN MANTIĞI (Kısaltıldı)
+        // C) FLAPPY BIRD OYUN MANTIĞI (Koda Gömülü)
         // **********************************
         
         const canvas = document.getElementById("gameCanvas");
@@ -422,13 +487,13 @@
             update();
         }
         
-        function createPipe() { /* ... Boru oluşturma kodları ... */
+        function createPipe() { 
             let gap = 140; let height = Math.random() * 200 + 50;
             pipes.push({ x: canvas.width, y: 0, width: 50, height: height, passed: false });
             pipes.push({ x: canvas.width, y: height + gap, width: 50, height: canvas.height - height - gap, passed: false });
         }
 
-        function drawBackground() { /* ... Arka plan çizim kodları ... */
+        function drawBackground() { 
             ctx.fillStyle = "#70c5ce"; ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "#f4d35e"; ctx.beginPath(); ctx.arc(350, 80, 40, 0, Math.PI * 2); ctx.fill();
             ctx.fillStyle = "rgba(255,255,255,0.8)";
@@ -438,7 +503,7 @@
             ctx.fillStyle = "rgba(0,0,0,0.2)"; ctx.fillRect(0, canvas.height - 50, canvas.width, 10);
         }
 
-        function drawBird() { /* ... Kuş çizim kodları ... */
+        function drawBird() { 
             ctx.save();
             ctx.translate(bird.x, bird.y);
             let angle = Math.min(Math.max(bird.velocity * 2, -30), 90) * Math.PI / 180;
@@ -461,7 +526,7 @@
             if (bird.wing > 0) bird.wing -= 0.1;
         }
 
-        function drawPipes() { /* ... Boru çizim kodları ... */
+        function drawPipes() { 
             pipes.forEach(pipe => {
                 ctx.fillStyle = "#2e7d32"; ctx.fillRect(pipe.x, pipe.y, pipe.width, pipe.height);
                 ctx.fillStyle = "rgba(0,0,0,0.2)";
